@@ -19,7 +19,9 @@ class Tweet {
     var retweeted: Bool // Configure retweet button
     var user: User // Contains name, screenname, etc. of tweet author
     var createdAtString: String // Display date
-    
+    var screenName: String
+    var name: String
+    var imageUrl: String
     // MARK: - Create initializer with dictionary
     init(dictionary: [String: Any]) {
         id = dictionary["id"] as! Int64
@@ -28,10 +30,12 @@ class Tweet {
         favorited = dictionary["favorited"] as? Bool
         retweetCount = dictionary["retweet_count"] as! Int
         retweeted = dictionary["retweeted"] as! Bool
-        
+
         let user = dictionary["user"] as! [String: Any]
         self.user = User(dictionary: user)
-        
+        screenName = self.user.screenName!
+        name = self.user.name!
+        imageUrl = user["profile_image_url"] as! String
         let createdAtOriginalString = dictionary["created_at"] as! String
         let formatter = DateFormatter()
         // Configure the input format to parse the date string
