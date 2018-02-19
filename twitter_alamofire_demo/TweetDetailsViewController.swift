@@ -1,56 +1,57 @@
 //
-//  TweetCell.swift
+//  TweetDetailsViewController.swift
 //  twitter_alamofire_demo
 //
-//  Created by Charles Hieger on 6/18/17.
-//  Copyright © 2017 Charles Hieger. All rights reserved.
+//  Created by Samuel Carbone on 2/18/18.
+//  Copyright © 2018 Charles Hieger. All rights reserved.
 //
 
 import UIKit
-import AlamofireImage
-class TweetCell: UITableViewCell {
-    @IBOutlet weak var favoriteImage: UIImageView!
+
+class TweetDetailsViewController: UIViewController {
+
     @IBOutlet weak var retweetImage: UIImageView!
-    
-    @IBOutlet weak var retweetCount: UILabel!
-    @IBOutlet weak var favoriteCount: UILabel!
-    @IBOutlet weak var created_at: UILabel!
-    @IBOutlet weak var screenName: UILabel!
+    @IBOutlet weak var favoriteImage: UIImageView!
     @IBOutlet weak var userName: UILabel!
-    @IBOutlet weak var profileImage: UIImageView!
+    @IBOutlet weak var created_at: UILabel!
+    @IBOutlet weak var favoriteCount: UILabel!
+    @IBOutlet weak var retweetCount: UILabel!
+    @IBOutlet weak var screenName: UILabel!
     @IBOutlet weak var tweetTextLabel: UILabel!
-    var tweet: Tweet! {
-        didSet {
-            tweetTextLabel.text = tweet.text 
-            retweetCount.text = "\(tweet.retweetCount)"
-            favoriteCount.text = "\(tweet.favoriteCount!)"
-            created_at.text = "\(tweet.createdAtString)"
-            screenName.text = "@\(tweet.screenName)"
-            userName.text = "\(tweet.name)"
-            profileImage.layer.cornerRadius = 8.0
-            profileImage.clipsToBounds = true
-            profileImage.af_setImage(withURL: URL(string: tweet.imageUrl)!)
-            if let favorited = tweet.favorited{
-                if favorited{
-                    favoriteImage.image = UIImage(imageLiteralResourceName: "favor-icon-red")
-                }
-                else{
-                    favoriteImage.image = UIImage(imageLiteralResourceName: "favor-icon")
-                }
-            } else{
-                favoriteImage.image = UIImage(imageLiteralResourceName: "favor-icon")
-            }
-            if tweet.retweeted {
-                retweetImage.image = UIImage(imageLiteralResourceName: "retweet-icon-green")
+    @IBOutlet weak var profileImage: UIImageView!
+    var tweet: Tweet!
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tweetTextLabel.text = tweet.text
+        retweetCount.text = "\(tweet.retweetCount)"
+        favoriteCount.text = "\(tweet.favoriteCount!)"
+        created_at.text = "\(tweet.createdAtString)"
+        screenName.text = "@\(tweet.screenName)"
+        userName.text = "\(tweet.name)"
+        profileImage.layer.cornerRadius = 8.0
+        profileImage.clipsToBounds = true
+        profileImage.af_setImage(withURL: URL(string: tweet.imageUrl)!)
+        if let favorited = tweet.favorited{
+            if favorited{
+                favoriteImage.image = UIImage(imageLiteralResourceName: "favor-icon-red")
             }
             else{
-                retweetImage.image = UIImage(imageLiteralResourceName: "retweet-icon")
+                favoriteImage.image = UIImage(imageLiteralResourceName: "favor-icon")
             }
-            let favoriteRecognizer = UITapGestureRecognizer(target: self, action: #selector(favoriteTapped(tapGestureRecognizer:)))
-            let retweetTapped = UITapGestureRecognizer(target: self, action: #selector(retweetTapped(tapGestureRecognizer:)))
-            retweetImage.addGestureRecognizer(retweetTapped)
-            favoriteImage.addGestureRecognizer(favoriteRecognizer)
+        } else{
+            favoriteImage.image = UIImage(imageLiteralResourceName: "favor-icon")
         }
+        if tweet.retweeted {
+            retweetImage.image = UIImage(imageLiteralResourceName: "retweet-icon-green")
+        }
+        else{
+            retweetImage.image = UIImage(imageLiteralResourceName: "retweet-icon")
+        }
+        let favoriteRecognizer = UITapGestureRecognizer(target: self, action: #selector(favoriteTapped(tapGestureRecognizer:)))
+        let retweetTapped = UITapGestureRecognizer(target: self, action: #selector(retweetTapped(tapGestureRecognizer:)))
+        retweetImage.addGestureRecognizer(retweetTapped)
+        favoriteImage.addGestureRecognizer(favoriteRecognizer)
+        // Do any additional setup after loading the view.
     }
     @objc func favoriteTapped(tapGestureRecognizer: UITapGestureRecognizer) {
         favoriteImage.isUserInteractionEnabled = false
@@ -106,16 +107,8 @@ class TweetCell: UITableViewCell {
             })
         }
     }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
-    }
-    
 }
